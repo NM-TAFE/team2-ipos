@@ -1,6 +1,7 @@
-from flask import Flask, redirect, render_template, url_for
+from flask import Flask, redirect, render_template, request, session, url_for
 
 app = Flask(__name__)
+app.secret_key = "ipos-secret-key"
 
 ROWS = 3
 COLS = 3
@@ -8,6 +9,7 @@ P1 = "X"
 P2 = "O"
 score_x = 0
 score_o = 0
+
 
 def new_board():
     """Create a 2D board filled with numbers 1-9.
@@ -106,10 +108,34 @@ board = new_board()
 current_player = P1
 
 
+def get_player_name():
+    """
+    Get p1_name and p2_name from the session variable. If not, return default name.
+    """
+    p1 = session.get("p1_name", "Player 1")
+    p2 = session.get("p2_name", "Player 2")
+    return p1, p2
+
+
+@app.route("/set_name", methods=["GET", "POST"])
+def set_name():
+    """
+    Save p1_name and p2_name to session variable. Redirect to index.
+    """
+    if request.method == "POST":
+        p1 = request.form.get("p1_name", " ").strip()
+        p2 = request.form.get("p2_name", " ").strip()
+        session["p1_name"] = p1 if p1 else "Player 1"
+        session["p2_name"] = p2 if p2 else "Player 2"
+        return redirect(url_for("index"))
+    return redirect(url_for("index"))
+
+
 @app.route("/")
 def index():
     winner = check_winner()
     draw = check_draw()
+    p1_name, p2_name = get_player_name()
     return render_template(
         "index.html",
         board=board,
@@ -118,6 +144,8 @@ def index():
         draw=draw,
         score_x=score_x,
         score_o=score_o,
+        p1_name=p1_name,
+        p2_name=p2_name,
     )
 
 
@@ -126,7 +154,7 @@ def play(cell):
     global current_player, score_x, score_o
     row, col = to_row_col(cell)
     current_value = board[row][col]
-    if current_value not in (P1, P2):
+    if current_value not in {P1, P2}:
         board[row][col] = current_player
         winner = check_winner()
         if winner == P1:
