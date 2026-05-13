@@ -1,6 +1,6 @@
 import unittest
 
-from app import app
+from src.app import app
 
 
 class TestGetPlayerName(unittest.TestCase):

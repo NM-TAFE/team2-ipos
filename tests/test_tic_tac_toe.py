@@ -1,13 +1,13 @@
 import unittest
 
-import app as game_app
-from app import all_same_player, check_draw, check_winner, new_board, to_row_col
+import src.app as game_app
+from src.game import all_same_player, check_draw, check_winner, new_board, to_row_col
 
 
 class TestGame(unittest.TestCase):
     def setUp(self):
         """Reset the board before each test to ensure a clean state."""
-        game_app.board = new_board()
+        game_app.game.board = new_board()
 
     def test_board_is_3x3(self):
         """Tests for new_board() — checks the board is created correctly as a 2D list."""
@@ -31,19 +31,19 @@ class TestGame(unittest.TestCase):
     def test_check_winner(self):
         # O fills the entire left column (vertical) [0][0], [1][0], [2][0].
         # Expected: 'O'
-        game_app.board[0][0] = "O"
-        game_app.board[1][0] = "O"
-        game_app.board[2][0] = "O"
-        self.assertEqual(check_winner(), "O")
+        game_app.game.board[0][0] = "O"
+        game_app.game.board[1][0] = "O"
+        game_app.game.board[2][0] = "O"
+        self.assertEqual(check_winner(game_app.game.board), "O")
 
     def test_draw_when_board_full(self):
         # Every cell is filled with a player marker and there is no winner.
         # Expected: True
         # fmt: off
-        game_app.board = [["X", "O", "X"],
+        game_app.game.board = [["X", "O", "X"],
                           ["X", "X", "O"],
                           ["O", "X", "O"]]
-        self.assertTrue(check_draw())
+        self.assertTrue(check_draw(game_app.game.board))
         # fmt: on
 
 
