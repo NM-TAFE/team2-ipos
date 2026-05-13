@@ -1,8 +1,6 @@
 import unittest
 from unittest.mock import patch
-
-from app import app
-
+from src.app import app
 
 class TestFrontend(unittest.TestCase):
     def setUp(self):
@@ -10,7 +8,7 @@ class TestFrontend(unittest.TestCase):
         self.client = app.test_client()
         app.config["TESTING"] = True
 
-    @patch("app.render_template")
+    @patch("src.app.render_template")
     def test_index_route_passes_correct_data(self, mock_render_template):
         """Tests for index route, checks if the correct data is passed to the template."""
         mock_render_template.return_value = "Mocked Template"
@@ -30,7 +28,7 @@ class TestFrontend(unittest.TestCase):
         self.assertIn("winner", kwargs)
         self.assertIn("draw", kwargs)
 
-    @patch("app.new_board")
+    @patch("src.app.new_board")
     def test_reset_route_calls_new_board(self, mock_new_board):
         """Tests for reset route, checks if the board is wiped by calling new_board."""
         # Make a GET request to the reset route.
