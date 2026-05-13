@@ -1,6 +1,8 @@
 import unittest
 from unittest.mock import patch
+
 from src.app import app
+
 
 class TestFrontend(unittest.TestCase):
     def setUp(self):

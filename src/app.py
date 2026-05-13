@@ -1,11 +1,13 @@
 import os
+
 from flask import Flask, redirect, render_template, request, session, url_for
-from src.game import check_winner, check_draw, to_row_col, new_board, P1, P2
+
+from src.game import P1, P2, check_draw, check_winner, new_board, to_row_col
 from src.models import TicTacToe
 
 # Set up template and static folders relative to the project root
-template_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'templates'))
-static_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'static'))
+template_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "templates"))
+static_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "static"))
 
 app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
 app.secret_key = "ipos-secret-key"

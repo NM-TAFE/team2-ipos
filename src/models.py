@@ -1,4 +1,5 @@
-from src.game import new_board, P1
+from src.game import P1, new_board
+
 
 class TicTacToe:
     def __init__(self):
